@@ -984,7 +984,7 @@
     }
     var now = new Date();
     return {
-      siteName: '中小学·高中知识图谱',
+      siteName: '中小学知识开源图谱',
       subject: subjectName,
       scope: shareScopeText(),
       mastered: sum.mastered.length,
@@ -1208,14 +1208,6 @@
 
     page.append(standardsCard(sum));
     page.append(logCard());
-    page.append(h('p', { class: 'iq-line', id: 'iq-line' },
-      '做完数学诊断，再测测思维能力？→ ',
-      h('a', {
-        href: 'https://test.pansgo.com/?from=math-result',
-        target: '_blank',
-        rel: 'noopener',
-        text: '儿童智商测试'
-      })));
     show(page);
     mountPathGraph(sum);
   }

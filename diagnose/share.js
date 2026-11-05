@@ -1,7 +1,7 @@
 /* 诊断结果分享图：canvas 竖图，系统字体，二维码用本地 qrcode-generator 绘制。 */
 (function (global) {
   'use strict';
-  var SHARE_URL = 'https://math.pansgo.com/?from=share';
+  var SHARE_URL = 'https://ghtxx.cn/';
   var W = 1080;
   var H = 1920;
   var FONT = '"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", "Source Han Sans SC", sans-serif';
@@ -143,7 +143,7 @@
     ctx.fill();
 
     drawLogo(ctx, 64, 56, 84);
-    text(ctx, m.siteName || '中小学·高中知识图谱', 168, 64, 800, 40, '#ffffff', 820);
+    text(ctx, m.siteName || '中小学知识开源图谱', 168, 64, 800, 40, '#ffffff', 820);
     text(ctx, '诊断结果', 168, 114, 500, 26, 'rgba(255,255,255,0.86)', 820);
 
     ctx.fillStyle = '#ffffff';

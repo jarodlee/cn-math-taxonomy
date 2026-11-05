@@ -8,7 +8,6 @@
   var INSTALLED_KEY = 'cnmPwa.installed.v1';
   var script = document.currentScript;
   var root = script && script.src ? new URL('../', script.src).href : new URL('/', location.href).href;
-  var track = window.cnmTrack || function () {};
 
   function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* 隐私模式 */ } }
@@ -33,7 +32,6 @@
   var bar = null;
   var sheet = null;
   var footerLink = null;
-  var shownTracked = false;
 
   function dismissed() { return !!lsGet(DISMISS_KEY); }
   function installed() { return lsGet(INSTALLED_KEY) === '1'; }
@@ -49,7 +47,7 @@
   function closeBar(remember) {
     if (bar && bar.parentNode) bar.parentNode.removeChild(bar);
     bar = null;
-    if (remember) { lsSet(DISMISS_KEY, String(Date.now())); track('install_hint_closed', { platform: isIOSSafari ? 'ios' : 'chrome' }); }
+    if (remember) { lsSet(DISMISS_KEY, String(Date.now())); }
   }
 
   function closeSheet(remember) {
@@ -66,11 +64,9 @@
     var p = deferred;
     deferred = null;
     closeBar(false);
-    track('install_prompt_shown', { platform: 'chrome' });
     try {
       p.prompt();
       var choice = await p.userChoice;
-      track(choice && choice.outcome === 'accepted' ? 'install_prompt_accepted' : 'install_prompt_dismissed', { platform: 'chrome' });
     } catch (e) { /* 系统弹框被拦截 */ }
     lsSet(DISMISS_KEY, String(Date.now()));
     refreshFooter();
@@ -82,7 +78,7 @@
     SVG_OPEN +
       '<rect x="6" y="6" width="288" height="88" rx="14" class="pic-bg"/>' +
       '<rect x="24" y="16" width="252" height="22" rx="11" class="pic-field"/>' +
-      '<text x="150" y="31" text-anchor="middle" class="pic-txt" font-size="11.5">math.pansgo.com</text>' +
+      '<text x="150" y="31" text-anchor="middle" class="pic-txt" font-size="11.5">ghtxx.cn</text>' +
       '<circle cx="150" cy="68" r="19" class="pic-hit"/>' +
       '<g class="pic-line" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' +
         '<path d="M46 60l-8 8 8 8"/><path d="M96 60l8 8-8 8"/>' +
@@ -113,13 +109,12 @@
       '<path d="M32 74h6q4 0 4-4v-4q0-3 3-3h4" class="pic-icon-line" fill="none" stroke-width="3" stroke-linecap="round"/>' +
       '<rect x="72" y="46" width="206" height="26" rx="8" class="pic-field"/>' +
       '<text x="82" y="63.5" class="pic-txt" font-size="13">知识图谱</text>' +
-      '<text x="72" y="84" class="pic-muted" font-size="10.5">math.pansgo.com</text>' +
+      '<text x="72" y="84" class="pic-muted" font-size="10.5">ghtxx.cn</text>' +
     '</svg>'
   ];
 
   function openGuide() {
     if (sheet) return;
-    track('ios_guide_opened');
     sheet = el('div', 'pwa-sheet-wrap');
     sheet.setAttribute('role', 'dialog');
     sheet.setAttribute('aria-modal', 'true');
@@ -186,7 +181,6 @@
     bar.appendChild(text);
     bar.appendChild(actions);
     document.body.appendChild(bar);
-    if (!shownTracked) { shownTracked = true; track('install_hint_shown', { platform: isIOSSafari && !deferred ? 'ios' : 'chrome' }); }
   }
 
   /* 页脚里的入口：提示被关掉之后，想装的人仍然能找到 */
